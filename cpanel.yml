@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/arakmasu/public_html/
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp style.css $DEPLOYPATH
+    - /bin/cp project_absensi.html $DEPLOYPATH
+    - /bin/cp -R gambar $DEPLOYPATH
