@@ -172,19 +172,29 @@
     <div class="container-fluid pt-5 pb-5 contact">
       <div class="container">
         <h1 class="text-center" id="contact">Contact Us</h1>
-        <div class="row pb-3">
-          <div class="col-md-6">
-            <input type="text" class="form-control form-control-lg mb-3" placeholder="Nama" />
-            <input type="email" class="form-control form-control-lg mb-3" placeholder="Email" />
-            <input type="text" class="form-control form-control-lg" placeholder="No.Handphone" />
-          </div>
-          <div class="col-md-6">
-            <textarea class="form-control form-control-lg" rows="5" placeholder="Pesan"></textarea>
-          </div>
+        <div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
+          <strong>Terima Kasih!</strong>Pesan Anda Sudah Kami Terima <i class="fa-solid fa-heart"></i>.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="col-md-3 mx-auto text-center">
-          <button type="button" class="btn btn-danger btn-lg">Submit</button>
-        </div>
+        <form name="arak-contact-form">
+          <div class="row pb-3">
+            <div class="col-md-6">
+              <input type="text" class="form-control form-control-lg mb-3" placeholder="Nama Lengkap" name="nama" />
+              <input type="email" class="form-control form-control-lg mb-3" placeholder="Email" name="email"/>
+              <input type="text" class="form-control form-control-lg" placeholder="No.Handphone" name="no-telp" />
+            </div>
+            <div class="col-md-6">
+              <textarea class="form-control form-control-lg" rows="5" placeholder="Pesan" name="pesan"></textarea>
+            </div>
+          </div>
+          <div class="col-md-3 mx-auto text-center">
+            <button type="submit" class="btn btn-danger btn-md btn-kirim">Submit</button>
+            <button class="btn btn-danger btn-loading d-none" type="button" disabled>
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Loading...
+            </button>
+          </div>
+        </form>
       </div>
     </div>
     <footer class="bg-dark pb-3">
@@ -192,5 +202,34 @@
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzxBDuW7_tXdsBMaMpvyGDQ-cJlfL3fi69ucswooAxNKnUrIfomz5AECGZPeGbmYUnTcA/exec'
+      const form = document.forms['arak-contact-form'];
+      const btnKirim = document.querySelector('.btn-kirim');
+      const btnLoading = document.querySelector('.btn-loading');
+      const myAlert = document.querySelector('.my-alert');
+    
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        // Ketika Tombol Submit di Klik
+        
+        // Tampilkan Tombol Loading, Hilangkan Tombol Kirim
+        btnLoading.classList.toggle('d-none');
+        btnKirim.classList.toggle('d-none');
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => { 
+            // Tampilkan Tombol Kirim, Hilangkan Tombol Loading
+            btnLoading.classList.toggle('d-none');
+            btnKirim.classList.toggle('d-none');
+            // Tampilkan Alert
+            myAlert.classList.toggle('d-none');
+            // reset form
+            form.reset();
+            console.log('Success!', response)
+          })
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
   </body>
 </html>
